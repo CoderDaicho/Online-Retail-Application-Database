@@ -1,77 +1,78 @@
-# Database Management for Retail Application
-### Problem Statement:
-* A Retail business organization (target) is not able to handle and maintain the details of potential market.
-* It is unable to manage various employees who belong to various departments, information about the customers and sold products their defects, quality and Voucher details etc.
-### Scope of Project: 
-*	This project aims to build a database for retail application for an organization like Target where customers buy projects online and offline.
-*	Retail application database is mainly used by the retail store administrators to improve their sales by analyze the product sales, customer and employees working in their organization
-*	This project helps in designing unique database which holds the information of the business model to properly store, analyze the data that company is looking for  
-*	Products list with minimum defects and maximum quality can be know which helps the organization to maintain good quality products in their store and increase their sales
-*	This project helps the organization to store and analyze customers, employee, product sales details.
-*	This Database design helps in analyzing which product is highly rated by customers, Total revenue earned by online and offline payment modes. 
-### Identification of Entities:
-* Employee
-* Customer
-* Address
-* Zip Code
-* Bill
-* Payment Mode
-* Order 
-* Order Item
-* Order Product
-* Product 
-* Voucher
-* Product Group
-* Product Description
-* Reviews
+# Online-Shopping-Cart-Database-Project
 
-⇾ Employee-Any person who is employed as a part of company staff
-Attributes: EmployeeID, EmpFirst_Name, EmpLast_SSN, EmpMail_Address, Designation, Department, Salary, Employee_Type.
+You may find more details about this project at my [personal blog](http://www.aaronguan.com/database-project.html)
 
-⇾ Customer -A person who buys products with cash or card basis. He may be internal or external customer.
-Attributes: CustomerID, First_Name, Last_Name, Mail_Address, Phone_Number, Category
+## ER Diagram
 
-⇾ Bill -Bill includes the total bill for the purchased products and amount that customer paid
-Attributes: Billing_ID, Amount_Paid
+![image](http://www.aaronguan.com/images/database/ER.PNG)
 
-⇾ Address -Address to with a particular order must be delivered.
-Attributes: AddressID, Address_line1, Address_line2
+### Entities
 
-⇾ Zip Code -Zip details of customers address is included 
-Attributes: ZipCode, City, State
+* User (__userId__, name, phoneNum)
+* Buyer (__userId__)
+* Seller (__userId__)
+* Bank Card (__cardNumber__, userId, bank, expiryDate)
+* Credit Card (__cardNumber__, organization)
+* Debit Card (__cardNumber__)
+* Store (__sid__, name, startTime, customerGrade, streetAddr, city, province)
+* Product (__pid__, sid, name, brand, type, amount, price, colour, customerReview, modelNumber)
+* Order Item (__itemid__, pid, price, creationTime)
+* Order (__orderNumber__, creationTime, paymentStatus, totalAmount)
+* Address (__addrid__, userid, name, city, postalCode, streetAddr, province, contactPhoneNumber)
 
-⇾ Payment- This table hold Date of customer visit number, payment and payment type whether the customer bought directly from store or purchased online. It also includes the customer card details
-Attributes: Payment_ID, Payment_Type, CreditCard_Number,Card_Type, CVV_Number, ExpiryDate, CardHolder_Name
+### Relationships
 
-⇾ Orders – This table hold the status of the order whether the order is delivered or not and the shipment option given by the customer.
-Attributes: Order_ID,Shippment_Duration, Order_Date,Status.
+* Manage (__userid__, __sid__, SetupTime) (userid ref Seller, sid ref Store)
+* Save to Shopping Cart (__userid__, __pid__, quantity, addtime) (userid ref Buyer, pid ref Product)
+* Contain (__orderNumber__, __itemid__, quantity) (orderNumber ref Order, itemid ref Order Item)
+* Deliver To (__addrid__, __orderNumber__, TimeDelivered) (addrid ref Address, orderNumber ref Order)
+* Payment (__C.cardNumber__, __orderNumber__, payTime) (C.cardNumber ref Credit Card, orderNumber ref Order)
 
-⇾ Order Item-OrderItem contains the details like date and quantity of items purchased.
-Attributes: Date of Order, Quantity
+## Create Database
 
-⇾ Order Product- This contains the details of quantity of product that customer ordered
-Attributes: OrderProduct_ID, Quantity
+* [Table.sql](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/Table.sql): Create tables for entities and relationships above.
+* [Insert.sql](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/Insert.sql): Insert datas into tables.
+* [Modification.sql](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/Modification.sql): Modify the data.
 
-⇾ Voucher- Voucher includes priority of customers so based on that customers are given discount on their purchase.
-Attributes: Voucher_Number, Description, Priority, Quantity_Item
+## Java GUI
 
-⇾ Product -It is a form of good that is purchased by customer.
-Attributes: ProductID, Product_Name, Available_Number
+[simpleJDBCPostgres.java](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/simpleJDBCPostgres.java) is only a sample Java to link the Postgresql JDBC driver and connect to the database for your reference.
 
-⇾ Product Details – Product details contains the description of particular product
-Attributes:  Weight, Width, Colour, Height
+[SQL.java](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/Java_GUI/SQL.java) is the acutal program that we wrote to submit the sql execution to the database based on the sample above.
 
-⇾ Product Group – Product group tells to which category the product belongs to (Ex. Electronics)
-Attributes:  Group_ID, Group_Name
+[Java_GUI](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/tree/master/Java_GUI) contains the Java programs for creating the GUI.
 
-⇾ Review-Reviews are the feedback given to the product by customers.
-Attributes: Quality, Defect%, Review_ID, Review_Date
+1. [MainFrame.java](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/Java_GUI/MainFrame.java): Provide main menu for user to choose different function.
 
-### ER Diagram for Retail Application
-#### ER Diagram for Retail Application Before Normalization:
-![111](https://user-images.githubusercontent.com/25045759/27304876-866e2f90-550d-11e7-944a-695b7d39b45a.jpg)
-![222](https://user-images.githubusercontent.com/25045759/27304877-86769478-550d-11e7-9e25-878464cf6d56.jpg)
+![image](http://www.aaronguan.com/images/database/MainFrame.png)
 
-#### After Normalization
-![333](https://user-images.githubusercontent.com/25045759/27304878-8679f712-550d-11e7-8dd3-d2ad92ee5289.jpg)
+2. [Register.java](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/Java_GUI/Register.java): User registration interface.
+
+![image](http://www.aaronguan.com/images/database/Register.png)
+
+3. [Login.java](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/Java_GUI/Login.java): User log-in interface.
+
+![image](http://www.aaronguan.com/images/database/Login.png)
+
+4. [AddAddress.java](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/Java_GUI/AddAddress.java): Add address for delivery.
+
+![image](http://www.aaronguan.com/images/database/Add%20Addr.png)
+
+5. [SearchFrame.java](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/Java_GUI/SearchFrame.java):Search products in database.
+
+![image](http://www.aaronguan.com/images/database/Search%20Prod.png)
+
+6. [SaveToCartFrame.java](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/Java_GUI/SaveToCartFrame.java): Add products into shopping cart.
+
+![image](http://www.aaronguan.com/images/database/Add%20to%20cart.png)
+
+7. [SetUpOrderFrame.java](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/Java_GUI/SetUpOrderFrame.java): View the shopping cart and create the order.
+
+![image](http://www.aaronguan.com/images/database/View%20Shoppingcart.png)
+
+8. [addressFrame.java](https://github.com/aaronzguan/Online-Shopping-Cart-Database-Project/blob/master/Java_GUI/addressFrame.java): Select a delivery address and finish the shopping.
+
+![image](http://www.aaronguan.com/images/database/Select%20Addr.png)
+
+
 
